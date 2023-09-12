@@ -1,0 +1,63 @@
+{% extends 'website/component/base.html' %}
+
+{% block head %}
+  {#  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>#}
+  <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@latest"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock head %}
+
+{% block content %}
+  <section class="card m-4">
+    <div class="card-body">
+      <ul class="nav nav-tabs" id="tab-bar" role="tablist">
+        {% for class in classes %}
+          <li class="nav-item" role="presentation">
+            <button class="nav-link {% if forloop.first %}active{% endif %}"
+                    id="class{{ class.id }}-tab"
+                    data-bs-toggle="tab" data-bs-target="#class{{ class.id }}"
+                    type="button" role="tab"
+                    @click="selectedCourse = {{ class.id }}"
+                    :class="{'fw-bold': selectedCourse == {{ class.id }}}"
+                    aria-controls="class{{ class.id }}" aria-selected="{{ forloop.first }}">
+              {{ class }}
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="tab-content" id="tab-bar-content">
+        {% for class in classes %}
+          <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+               id="class{{ class.id }}" role="tabpanel"
+               aria-labelledby="class{{ class.id }}-tab">
+
+            <div class="d-flex align-items-start my-4">
+              <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                {% for view in information_views %}
+                  <button class="nav-link {% if forloop.first %}active{% endif %}"
+                          id="inf-c{{ class.id }}-v{{ forloop.counter0 }}-tab" data-bs-toggle="pill" data-bs-target="#inf-c{{ class.id }}-v{{ forloop.counter0 }}"
+                          aria-controls="{{ view.display_name }}"
+                          type="button" role="tab" aria-selected="{{ forloop.first }}"
+                          hx-get="{% url view.url class_id=class.id %}"
+                          hx-trigger="{% if forloop.first and forloop.parentloop.first %}load{% elif forloop.first %}intersect{% else %}click once{% endif %}"
+                          hx-target="#inf-c{{ class.id }}-v{{ forloop.counter0 }}"
+                          hx-swap="innerHTML"
+                  >{{ view.display_name }}</button>
+                {% endfor %}
+              </div>
+              <div class="tab-content w-100" id="v-pills-tabContent">
+                {% for view in information_views %}
+                  <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                       id="inf-c{{ class.id }}-v{{ forloop.counter0 }}" role="tabpanel"
+                       aria-labelledby="inf-c{{ class.id }}-v{{ forloop.counter0 }}-tab">
+                    {{ view.display_name }}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock content %}

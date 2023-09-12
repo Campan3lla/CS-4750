@@ -1,0 +1,26 @@
+{% extends 'website/component/base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <section class="card mt-4 mb-4">
+            <div class="card-header text-center bg-primary bg-gradient text-white">
+                <h3 class="fw-bold">Register for Class</h3>
+            </div>
+            <div class="card-body">
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </section>
+    </form>
+{% endblock content %}

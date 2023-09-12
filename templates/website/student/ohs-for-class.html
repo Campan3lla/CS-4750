@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    {% with class.get_active_ohs as office_hours %}
+      {% if office_hours %}
+        {% for ohs in office_hours %}
+          <section class="container mt-5 col-md-4">
+            <div class="card">
+              <div class="card-header bg-primary bg-gradient text-white">
+                {% with  ohs.ohs_instructor.instructor_user as instructor %}
+                <h3>{{ instructor.first_name }} {{ instructor.last_name }}:</h3>
+                {% endwith %}
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <p>Runs from: <b>{{ ohs.ohs_start_time.time }} till {{ ohs.ohs_end_time.time }}</b></p>
+                </div>
+                <hr>
+                <div class="mb-3">
+                  <p>Location: <b>{{ ohs.ohs_location.location_name }}</b></p>
+                </div>
+                <hr>
+                <div class="mb-3">
+                  <p>Status: <b>{{ ohs.ohs_status|lower|capfirst }}</b></p>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-center">
+                <a href="{% url 'website:student-ohq-create' ohs.id %}" class="btn btn-primary flex-grow-1">Join</a>
+              </div>
+            </div>
+          </section>
+        {% endfor %}
+      {% else %}
+        <section class="container mt-5 col-md-12">
+          <div class="card">
+            <div class="card-header bg-primary bg-gradient text-white">
+              <h2 class="card-title">No Office Hours</h2>
+            </div>
+            <div class="card-body">
+              There are no office hours available at this time.
+            </div>
+            <div class="card-footer"></div>
+          </div>
+        </section>
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>

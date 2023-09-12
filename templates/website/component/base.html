@@ -1,0 +1,66 @@
+{% load bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Office Hour Manager {% endblock %}</title>
+    <link href="{% static 'website/css/base.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    {% block head %}{% endblock head %}
+  </head>
+
+  <body>
+    <header>
+      {% include 'website/component/navbar.html' %}
+    </header>
+
+    <main>
+      {% block main %}
+      <div class="container">
+        <div class="row">
+          <div class="col"></div> <!-- Spacer column -->
+          <div class="col-10">
+
+            {% block content %}
+            <section class="card mb-4 mt-4">
+              <div class="card-body">
+                <h2 class="card-title">Office Hour Management</h2>
+                <p class="card-text">Created by Jonah Kim, Yuxi Yang, and Tammy Ngo</p>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-body">
+                <h2 class="card-title">Description</h2>
+                <p class="card-text">
+                    This website allows for instructors (both professors and TAs) to create office hours,
+                    specifying information concerning the time, location, and class. They will also be able
+                    to view some statistical summaries pertaining to each class they are teaching or
+                    assisting in. On the other hand, students will be able to freely view available office
+                    hours corresponding to the classes they are registered to. Then, students will be able
+                    to submit questions relating to specific assignments for instructors to answer. Once
+                    answered, instructors will be able to close them once commented on.
+                </p>
+              </div>
+            </section>
+            {% endblock content %}
+
+          </div>
+          <div class="col"></div> <!-- Spacer column -->
+        </div>
+      </div>
+      {% endblock main %}
+    </main>
+
+    {% block footer %}
+      {% include 'website/component/footer.html' %}
+    {% endblock footer %}
+  </body>
+
+  {% block script %}{% endblock script %}
+</html>

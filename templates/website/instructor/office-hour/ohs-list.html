@@ -1,0 +1,82 @@
+{% extends 'website/component/base.html' %}
+{% load utility_tags %}
+
+{% block head %}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock head %}
+
+{% block content %}
+    <section x-cloak class="card m-4" x-data="{selectedCourse: {{ classes.0.id }}}">
+        <div class="card-body">
+            <ul class="nav nav-tabs" id="tab-bar" role="tablist">
+                {% for class in classes %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {% if forloop.first %}active{% endif %}"
+                                id="class{{ class.id }}-tab"
+                                data-bs-toggle="tab" data-bs-target="#class{{ class.id }}"
+                                type="button" role="tab"
+                                @click="selectedCourse = {{ class.id }}"
+                                :class="{'fw-bold': selectedCourse == {{ class.id }}}"
+                                aria-controls="class{{ class.id }}" aria-selected="{{ forloop.first }}">
+                            {{ class }}
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content" id="tab-bar-content">
+                {% for class in classes %}
+                    <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                         id="class{{ class.id }}" role="tabpanel"
+                         aria-labelledby="class{{ class.id }}-tab">
+                        <div class="container">
+                            <div class="row">
+                                {% with class_office_hours_dict|get:class as office_hours %}
+                                    {% if office_hours %}
+                                        {% for ohs in office_hours %}
+                                            <section class="container mt-5 col-md-4">
+                                                <div class="card">
+                                                    <div class="card-header bg-primary bg-gradient text-white">
+                                                        <h5 class="card-title">{{ ohs.ohs_start_time.date }}</h5>
+                                                        <h6 class="card-subtitle text-light">{{ ohs.ohs_start_time.time }} till {{ ohs.ohs_end_time.time }}</h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <p>Location: <b>{{ ohs.ohs_location.location_name }}</b></p>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="mb-3">
+                                                            <p>Status: <b>{{ ohs.ohs_status|lower|capfirst }}</b></p>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="mb-3">
+                                                            <p>Questions: <b>{{ ohs.get_closed_ohqs|length }} / {{ ohs.officehourquestion_set.all|length }}</b></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer d-flex justify-content-center">
+                                                        <a href="{% url 'website:instructor-ohs-detail' ohs.id %}" class="btn btn-primary flex-grow-1">View</a>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        {% endfor %}
+                                    {% else %}
+                                        <section class="container mt-5 col-md-12">
+                                            <div class="card">
+                                                <div class="card-header text-center bg-primary bg-gradient text-white">
+                                                    <h3 class="fw-bold">No Office Hours</h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    You have not held office hours yet.
+                                                </div>
+                                                <div class="card-footer"></div>
+                                            </div>
+                                        </section>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

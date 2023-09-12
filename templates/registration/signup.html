@@ -1,0 +1,44 @@
+{% extends 'website/component/base.html' %}
+
+{% load bootstrap5 %}
+{% load bootstrap_tags %}
+{% bootstrap_css %}
+{% bootstrap_form %}
+{% bootstrap_javascript %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <section class="card mt-4 mb-4">
+      <div class="card-header text-center"><b>Signup</b></div>
+      <div class="card-body">
+        {% bs_errors form.non_field_errors %}
+
+        {% bs_input form.first_name %}
+        {% bs_input form.last_name %}
+        {% bs_input form.username name='Computing ID' maxlength=6 %}
+        {% bs_input form.password input_type='password' %}
+        {% bs_input form.password_confirmation input_type='password' %}
+        <hr>
+        <div class="text-center">
+          <div class="btn-group text" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="checkbox" name="is_student" class="btn-check" id="btncheck1" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btncheck1">Student</label>
+
+            <input type="radio" name="instructor_type" class="btn-check" id="btncheck2" value="TA">
+            <label class="btn btn-outline-primary" for="btncheck2">TA</label>
+
+            <input type="radio" name="instructor_type" class="btn-check" id="btncheck3" value="PROF">
+            <label class="btn btn-outline-primary" for="btncheck3">Professor</label>
+
+            <input type="radio" name="instructor_type" class="btn-check" id="btncheck4" value="None" checked>
+            <label class="btn btn-outline-primary" for="btncheck4">Not an Instructor</label>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        {% bs_button 'Signup' %}
+      </div>
+    </section>
+  </form>
+{% endblock %}

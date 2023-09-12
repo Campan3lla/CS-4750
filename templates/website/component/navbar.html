@@ -1,0 +1,77 @@
+{% with user=request.user %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      Office Hour Database
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'website:home' %}">Home</a>
+        </li>
+        {% if user.is_instructor or user.is_superuser %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="instructorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Instructor
+            </a>
+            <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="instructorDropdown">
+              <li class="dropdown-item">
+                <a class="nav-link" href="{% url 'website:instructor-ohs-create' %}">Start OHS</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{% url 'website:instructor-ohs-list' %}">Your Office Hours</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{% url 'website:inf-home' %}">Information Summaries</a>
+              </li>
+            </ul>
+          </li>
+        {% endif %}
+        {% if user.user_instructor.instructor_type == 'PROF' or user.is_superuser %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="instructorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Professor
+            </a>
+            <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="studentDropdown">
+              <li class="dropdown-item">
+                <a class="nav-link" href="{% url 'website:professor-course-create' %}">Create Course</a>
+              </li>
+            </ul>
+          </li>
+        {% endif %}
+        {% if user.is_student or user.is_superuser %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="instructorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Student
+            </a>
+            <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="instructorDropdown">
+              <li class="dropdown-item">
+                <a class="nav-link" href="{% url 'website:student-ohs-list' %}">Available Office Hours</a>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" href="{% url 'website:student-ohq-list' %}">View Questions</a>
+              </li>
+            </ul>
+          </li>
+        {% endif %}
+        {% if user.is_authenticated and user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'website:register' %}">Register</a>
+          </li>
+        {% endif %}
+      </ul>
+      <div class="btn-group" role="group" aria-label="First group">
+        <a class="btn btn-secondary" href="{% url 'website:signup' %}">Signup</a>
+        {% if request.user.is_authenticated %}
+          <a class="btn btn-primary" href="{% url 'website:logout' %}">Logout</a>
+        {% else %}
+          <a class="btn btn-primary" href="{% url 'website:login' %}">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+{% endwith %}

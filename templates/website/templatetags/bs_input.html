@@ -1,0 +1,9 @@
+{% load bootstrap_tags %}
+<div class="form-group mb-3">
+  {% bs_errors field.errors %}
+  <label for="{{ field.id_for_label }}" class="form-label">{{ name|display_name }}</label>
+  <input name="{{ field.name }}"
+         {% if field.initial %}value="{{ field.initial }}"{% endif %}
+         type="{% if type %}{{ type }}{% else %}{{ field.widget_type }}{% endif %}"
+         class="form-control" {% include 'website/templatetags/attrs.html' %}>
+</div>

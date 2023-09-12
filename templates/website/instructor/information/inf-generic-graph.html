@@ -1,0 +1,36 @@
+<div>
+  <canvas id="{{ canvas_id }}"></canvas>
+</div>
+
+{{ labels|json_script:label_id }}
+{{ data|json_script:data_id }}
+
+<script type="text/javascript">
+    {
+        let canvas = document.getElementById('{{ canvas_id }}');
+        canvas.height = 400;
+        new Chart(canvas, {
+            type: '{{ graph_type }}',
+            data: {
+                labels: JSON.parse(document.getElementById("{{ label_id }}").textContent),
+                datasets: [{
+                    label: '{{ chart_name }}',
+                    data: JSON.parse(document.getElementById("{{ data_id }}").textContent),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: {{ max }},
+                        ticks: {
+                            precision: 0
+                        },
+                    },
+                }
+            }
+        });
+    }
+</script>

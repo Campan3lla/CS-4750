@@ -1,0 +1,87 @@
+{% extends 'website/component/base.html' %}
+
+{% load bootstrap_tags %}
+
+{% block content %}
+  {% with ohs.ohs_class as class %}
+  <form method="post">
+    {% csrf_token %}
+    <section class="card m-4">
+      <div class="card-header text-center bg-primary bg-gradient text-white">
+        {% with ohs.ohs_instructor.instructor_user as instructor %}
+        <h3>{{ instructor.first_name }} {{ instructor.last_name }}</h3>
+        {% endwith %}
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <p>Runs from: <b>{{ ohs.ohs_start_time.time }} till {{ ohs.ohs_end_time.time }}</b></p>
+        </div>
+        <hr>
+        <div class="mb-3">
+          <p>Location: <b>{{ ohs.ohs_location.location_name }}</b></p>
+        </div>
+        <hr>
+        <div class="mb-3">
+          <p>Status: <b>{{ ohs.ohs_status|lower|capfirst }}</b></p>
+        </div>
+      </div>
+      <div class="card-header bg-primary bg-gradient text-center text-white">
+        <h5>Submit Question:</h5>
+      </div>
+      <div class="card-body">
+        {% if errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for err_key, err_val in errors.items %}
+              {{ err_key }}: {{ err_val }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% bs_errors errors.ohq_ohs %}
+          <div class="btn-group mb-3 w-100">
+            <label for="dropdownMenuClickableInside" class="form-label me-2 mt-1">
+              Topics:
+            </label>
+            <button class="form-select fw-bold" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+              Multi-Select
+            </button>
+
+            <div class="container dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+            <div class="row">
+
+              {% for course_topic in class.class_course.coursetopic_set.all %}
+                <div class="col-md-3">
+                <div class="form-check ms-2 me-2">
+                  <label>{{ course_topic.course_topic_name }}
+                    <input
+                        name="ohq_topics"
+                        value="{{ course_topic.id }}"
+                        class="form-check-input"
+                        type="checkbox">
+                  </label>
+                </div>
+                </div>
+              {% endfor %}
+            </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="ohq_assignment" class="form-label">Assignment:</label>
+            <select class="form-select" id="ohq_assignment" name="ohq_assignment">
+              <option name="ohq_assignment" value="" selected>None</option>
+              {% for assignment in class.assignment_set.all %}
+                <option name="ohq_assignment" value="{{ assignment.id }}">{{ assignment }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="ohq_student_comment" class="form-label">General Comments:</label>
+            <textarea class="form-control" id="ohq_student_comment" name="ohq_student_comment" rows="2"></textarea>
+          </div>
+      </div>
+      <div class="card-footer d-flex align-contents-center">
+        <button type="submit" class="btn btn-dark ms-4 flex-grow-1 me-4">Submit</button>
+      </div>
+    </section>
+  </form>
+  {% endwith %}
+{% endblock content %}

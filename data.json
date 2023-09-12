@@ -1,0 +1,248 @@
+{
+  "members": [
+    {
+      "first_name": "Dave",
+      "last_name": "Fredmen",
+      "password": "123",
+      "username": "fr3nds",
+      "email": "fr3nds@virginia.edu",
+      "is_student": false,
+      "is_instructor": true,
+      "instructor_type": "PROF"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "password": "123",
+      "username": "jndh3e",
+      "email": "jndh3e@virginia.edu",
+      "is_student": true,
+      "is_instructor": false,
+      "instructor_type": ""
+    },
+    {
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "password": "123",
+      "username": "jnd32e",
+      "email": "jnd32e@virginia.edu",
+      "is_student": true,
+      "is_instructor": false,
+      "instructor_type": ""
+    },
+    {
+      "first_name": "Dave",
+      "last_name": "Davidson",
+      "password": "123",
+      "username": "d1e3pk",
+      "email": "d1e3pk@virginia.edu",
+      "is_student": true,
+      "is_instructor": false,
+      "instructor_type": ""
+    },
+    {
+      "first_name": "Nat",
+      "last_name": "Natterson",
+      "password": "123",
+      "username": "na4thd",
+      "email": "na4thd@virginia.edu",
+      "is_student": true,
+      "is_instructor": true,
+      "instructor_type": "TA"
+    },
+    {
+      "first_name": "Prof",
+      "last_name": "Professorin",
+      "password": "123",
+      "username": "pr4thf",
+      "email": "pr4thf@virginia.edu",
+      "is_student": false,
+      "is_instructor": true,
+      "instructor_type": "PROF"
+    },
+    {
+      "first_name": "Stanford",
+      "last_name": "Brooks",
+      "password": "123",
+      "username": "brs3nd",
+      "email": "brs3nd@virginia.edu",
+      "is_student": true,
+      "is_instructor": false,
+      "instructor_type": ""
+    }
+  ],
+  "courses": [
+    {
+      "course": {
+        "course_subject": "CS",
+        "course_catalog_number": "3140"
+      },
+      "course_topics": [
+        "Design Patterns", "Architecture", "Model View Controller",
+        "Debugging", "Refactoring", "Testing", "General", "Design", "Mockito",
+        "Gradle", "JSON", "APIs", "JDBC", "SQL", "JavaFX", "Hibernate", "Three-Layer Architecture"
+      ],
+      "classes": [
+        {
+          "semester": {
+            "semester_name": "FALL",
+            "semester_year": 2023
+          },
+          "registration": [
+            {"computing_id": "jndh3e", "reg_type": "STUD"},
+            {"computing_id": "jnd32e", "reg_type": "STUD"},
+            {"computing_id": "d1e3pk", "reg_type": "STUD"},
+            {"computing_id": "brs3nd", "reg_type": "STUD"},
+            {"computing_id": "na4thd", "reg_type": "TA"},
+            {"computing_id": "pr4thf", "reg_type": "PROF"}
+          ],
+          "assignments": [
+            {
+              "assignment_name": "HW1 A/B: Apportionment",
+              "assignment_topics": ["Design", "Testing"]
+            },
+            {
+              "assignment_name": "HW1 C: Apportionment",
+              "assignment_topics": ["Design", "Testing"]
+            },
+            {
+              "assignment_name": "HW2: Wordle Debugging",
+              "assignment_topics": ["Debugging", "Testing"]
+            },
+            {
+              "assignment_name": "HW3: Apportionment Refactoring",
+              "assignment_topics": ["Refactoring", "Debugging", "Testing", "Design"]
+            },
+            {
+              "assignment_name": "HW4: Course Registration",
+              "assignment_topics": ["Mockito", "Debugging", "Testing", "Design", "Refactoring"]
+            },
+            {
+              "assignment_name": "HW5: Wordle GUI",
+              "assignment_topics": ["JavaFX", "Design"]
+            },
+            {
+              "assignment_name": "HW6: Bus Routing",
+              "assignment_topics": ["APIs", "JSON", "Design Patterns", "SQL", "JDBC"]
+            },
+            {
+              "assignment_name": "HW7: Course Reivew",
+              "assignment_topics": ["Design Patterns", "SQL", "JDBC", "Hibernate",
+              "Three-Layer Architecture"]
+            }
+          ],
+          "office_hours": [
+            {
+              "ohs_instructor_computing_id": "na4thd",
+              "ohs_start_time": "2023-09-05T14:00:00",
+              "ohs_end_time": "2023-09-05T16:00:00",
+              "ohs_status": "OPEN",
+              "location_name": "Online/Zoom",
+              "questions": [
+                {
+                  "ohq_student_computing_id": "jndh3e",
+                  "ohq_assignment": null,
+                  "ohq_student_comment": "",
+                  "ohq_instructor_comment": "",
+                  "ohq_topics": ["Refactoring", "Debugging"],
+                  "ohq_opened_at": "2023-09-05T14:01:00",
+                  "ohq_closed_at": "2023-09-05T14:07:00",
+                  "ohs_status": "ANSWERED"
+                },
+                {
+                  "ohq_student_computing_id": "jndh3e",
+                  "ohq_assignment": "HW2: Wordle Debugging",
+                  "ohq_student_comment": "",
+                  "ohq_instructor_comment": "",
+                  "ohq_topics": [],
+                  "ohq_opened_at": "2023-09-05T14:03:00",
+                  "ohq_closed_at": "2023-09-05T14:10:00",
+                  "ohs_status": "ANSWERED"
+                },
+                {
+                  "ohq_student_computing_id": "jnd32e",
+                  "ohq_assignment": "HW3: Apportionment Refactoring",
+                  "ohq_student_comment": "",
+                  "ohq_instructor_comment": "",
+                  "ohq_topics": [],
+                  "ohq_opened_at": "2023-09-05T14:23:00",
+                  "ohq_closed_at": "2023-09-05T14:30:00",
+                  "ohs_status": "ANSWERED"
+                }
+              ]
+            },
+            {
+              "ohs_instructor_computing_id": "pr4thf",
+              "ohs_start_time": "2023-10-05T12:00:00",
+              "ohs_end_time": "2023-10-05T14:00:00",
+              "ohs_status": "OPEN",
+              "location_name": "Online/Zoom",
+              "questions": []
+            }
+          ]
+        },
+        {
+          "semester": {
+            "semester_name": "FALL",
+            "semester_year": 2023
+          },
+          "registration": [
+            {"computing_id": "jndh3e", "reg_type": "STUD"},
+            {"computing_id": "pr4thf", "reg_type": "PROF"}
+          ],
+          "assignments": [
+            {
+              "assignment_name": "HW1: Apportionment",
+              "assignment_topics": ["Design", "Testing"]
+            },
+            {
+              "assignment_name": "HW2: Wordle Debugging",
+              "assignment_topics": ["Debugging", "Testing"]
+            },
+            {
+              "assignment_name": "HW3: Apportionment Refactoring",
+              "assignment_topics": ["Refactoring", "Debugging", "Testing", "Design"]
+            }
+          ],
+          "office_hours": []
+        }
+      ]
+    },
+    {
+      "course": {
+        "course_subject": "CS",
+        "course_catalog_number": "4750"
+      },
+      "course_topics": [
+        "DBMS", "Normalization", "SQL", "General"
+      ],
+      "classes": [
+        {
+          "registration": [
+            {"computing_id": "jndh3e", "reg_type": "STUD"},
+            {"computing_id": "pr4thf", "reg_type": "PROF"}
+          ],
+          "semester": {
+            "semester_name": "SUMMER",
+            "semester_year": 2023
+          },
+          "assignments": [
+            {
+              "assignment_name": "Chapter 1 Practice",
+              "assignment_topics": ["DBMS"]
+            },
+            {
+              "assignment_name": "Chapter 6 Practice",
+              "assignment_topics": ["Normalization"]
+            },
+            {
+              "assignment_name": "Chapter 7 Practice",
+              "assignment_topics": ["SQL"]
+            }
+          ],
+          "office_hours": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{% extends 'website/component/base.html' %}
+
+{% block head %}
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@latest"></script>
+{% endblock %}
+
+{% block content %}
+  <div x-data="{
+  selectedCourse: {{ classes.0.id }},
+  selectedLocation: '',
+  toggleModal() {
+    var modal = new bootstrap.Modal(document.getElementById('locationFormModal'))
+    modal.toggle()
+  },
+  handleLocation() {
+    console.log('Hello');
+    if (this.selectedLocation == 'Create Location') {
+      this.toggleModal();
+    }
+  }
+  }">
+
+  <!-- Modal -->
+  <form id="locationForm" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="modal fade" id="locationFormModal" tabindex="-1" aria-labelledby="locationFormModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-center bg-primary bg-gradient text-white">
+            <h5 class="modal-title" id="locationFormModalLabel">Create Location</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group mb-3 d-flex">
+              <label class="form-label flex-grow-1">
+                Location Name: <input name="location_name" class="form-control" type="text" required>
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary"
+                    hx-post="{% url 'website:instructor-location-create' %}"
+                    hx-serialize="true"
+                    hx-target="#location"
+                    hx-swap="afterbegin"
+                    data-bs-dismiss="modal"
+            >Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+    <section class="card m-4">
+      <div class="card-body">
+        <ul class="nav nav-tabs" id="tab-bar" role="tablist">
+          {% for class in classes %}
+            <li class="nav-item" role="presentation">
+              <button class="nav-link {% if forloop.first %}active{% endif %}"
+                      data-bs-toggle="tab"
+                      type="button" role="tab"
+                      @click="selectedCourse = {{ class.id }}"
+                      :class="{'fw-bold': selectedCourse == {{ class.id }}}"
+              >
+                {{ class }}
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="ohs_class" x-bind:value="selectedCourse">
+          <section class="card m-4">
+            <div class="card-header text-center bg-primary bg-gradient text-white"><h3 class="fw-bold">Start Office Hour Session:</h3></div>
+
+            <div class="card-body">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group mb-3">
+                    <label for="startTime" class="form-label">Start Time</label>
+                    <input id="startTime" name="ohs_start_time" type="datetime-local" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group mb-3">
+                    <label for="endTime" class="form-label">End Time</label>
+                    <input id="endTime" name="ohs_end_time" type="datetime-local" class="form-control" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label for="location" class="form-label">Location:</label>
+                    <select x-model="selectedLocation" @change="handleLocation" id="location" name="ohs_location" class="form-select" required>
+                        {% for location in locations %}
+                          <option {% if forloop.first %}selected{% endif %} value="{{ location.id }}">{{ location.location_name }}</option>
+                        {% endfor %}
+                      <option class="btn">Create Location</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                  <h4 class="alert-heading">Error!</h4>
+                  {% for err_key, err_val in errors.items %}
+                    {{ err_key }}: {{ err_val }}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="card-footer d-flex align-contents-center mt-5">
+              <button type="submit" class="btn btn-dark ms-4 flex-grow-1 me-4">Submit</button>
+            </div>
+
+          </section>
+        </form>
+      </div>
+    </section>
+  </div>
+{% endblock %}

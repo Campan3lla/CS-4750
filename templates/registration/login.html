@@ -1,0 +1,26 @@
+{% extends 'website/component/base.html' %}
+
+{% load bootstrap5 %}
+{% load crispy_forms_tags %}
+{% load bootstrap_tags %}
+{% bootstrap_css %}
+{% bootstrap_form %}
+{% bootstrap_javascript %}
+
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <section class="card mt-4 mb-4">
+      <div class="card-header text-center"><b>Login</b></div>
+      <div class="card-body">
+        {% bs_errors form.non_field_errors %}
+        {% bs_input form.username name='Computing ID' maxlength=6 %}
+        {% bs_input form.password %}
+      </div>
+      <div class="card-footer">
+        {% bs_button 'Login' %}
+      </div>
+    </section>
+  </form>
+{% endblock content %}

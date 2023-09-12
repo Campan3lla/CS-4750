@@ -1,0 +1,94 @@
+<section x-cloak class="container mt-3 mb-3"
+         x-data="{ showOHQDetails: {% if ohq.ohq_status == 'PENDING' %}true{% else %}false{% endif %} }"
+         id="question{{ ohq.id }}"
+         @load="console.log('{{ ohq.id }}')"
+>
+  <div class="card">
+    <div class="card-header bg-primary bg-gradient text-white">
+      <div class="d-flex justify-content-between">
+        {% with ohq.ohq_student.student_user as student %}
+          <div>
+            <h3 class="card-title">{{ student.first_name }} {{ student.last_name }}:</h3>
+            <h5 class="card-subtitle text-light">{{ ohq.ohq_status|lower|capfirst }}</h5>
+          </div>
+          <!-- DROPDOWN: -->
+          <form
+              hx-post="{% url 'website:instructor-ohs-detail-edit-ohq' ohq_id=ohq.id %}"
+              hx-target="#question{{ ohq.id }}"
+              hx-swap="outerHTML"
+          >
+            {% csrf_token %}
+            <div class="dropdown dropend">
+              <button class="btn btn-light" type="button" data-bs-toggle="dropdown">
+                <i class="bi fs-3 bi-pencil-square"></i>
+              </button>
+
+              <!-- Dropdown form -->
+              <div class="dropdown-menu py-3 px-4">
+                <h6 class="dropdown-header">Edit Question:</h6>
+                <div class="dropdown-divider"></div>
+
+                <label class="form-label fw-bold">
+                  Status:
+                  <select name="ohq_status" class="form-select">
+                    <option {% if ohq.ohq_status == 'PENDING' %}selected{% endif %} value="PENDING">Pending</option>
+                    <option {% if ohq.ohq_status == 'ANSWERED' %}selected{% endif %} value="ANSWERED">Answered</option>
+                    <option {% if ohq.ohq_status == 'UNANSWERED' %}selected{% endif %} value="UNANSWERED">Unanswered</option>
+                  </select>
+                </label>
+
+                <label class="form-label fw-bold">Instructor Comment:
+                  <textarea name="ohq_instructor_comment">{{ ohq.ohq_instructor_comment }}</textarea>
+                </label>
+                <div class="dropdown-divider"></div>
+
+                <button class="btn btn-primary" type="submit">Edit</button>
+              </div>
+            </div>
+          </form>
+        {% endwith %}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="accordion mb-3">
+        <button class="accordion-button mb-2" :class="{'collapsed': !showOHQDetails}" type="button" @click="showOHQDetails = !showOHQDetails">
+          Question Information:
+        </button>
+        <div x-show="showOHQDetails" class="ms-4">
+          {% if ohq.ohq_assignment %}
+            <div class="mb-3">
+              <h4>Assignment:</h4>
+              <p>{{ ohq.ohq_assignment.assignment_name|default_if_none:"No Assignment" }}</p>
+            </div>
+            <hr>
+          {% endif %}
+          {% if ohq.ohq_topics.all %}
+            <div class="mb-3">
+              <h4>Course Topics:</h4>
+              <ul class="list-inline">
+                {% for crstopic in ohq.ohq_topics.all %}
+                  <li class="list-inline-item">{{ crstopic.course_topic_name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <hr>
+          {% endif %}
+          {% if ohq.ohq_student_comment %}
+            <div class="mb-3">
+              <h5>Student Comments:</h5>
+              <p>{{ ohq.ohq_student_comment }}</p>
+            </div>
+            <hr>
+          {% endif %}
+          {% if ohq.ohq_instructor_comment %}
+            <div class="mb-3">
+              <h5>Your Comments:</h5>
+              <p>{{ ohq.ohq_instructor_comment }}</p>
+            </div>
+            <hr>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

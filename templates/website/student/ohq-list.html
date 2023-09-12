@@ -1,0 +1,125 @@
+{% extends 'website/component/base.html' %}
+
+{% block head %}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {#  <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@latest"></script>#}
+{% endblock head %}
+
+{% block content %}
+    <div class="container" x-data="{
+    cardAmount: 2
+  }">
+        <div class="card-header ms-5 me-5 mt-4 mb-4 text-center">
+            <label for="cardAmount" class="form-label">Questions per row: <span x-text="cardAmount"></span> </label>
+            <input type="range" x-model="cardAmount" class="form-range" min="1" max="3" id="cardAmount">
+        </div>
+        <div class="row">
+            {% if ohqs %}
+                {% for ohq in ohqs %}
+                    {% with ohq.ohq_ohs.ohs_instructor.instructor_user as instructor %}
+                        {% with ohq.ohq_ohs as ohs %}
+                            <section x-cloak class="container mt-3 mb-3"
+                                     :class="{
+                                        'col-md-4': cardAmount == 3,
+                                        'col-md-6': cardAmount == 2,
+                                        'col-md-12': cardAmount == 1
+                                      }"
+                                     x-data="{ showOHQDetails: {% if ohq.ohq_status == 'PENDING' %}true{% else %}false{% endif %}, showOHSDetails: false }"
+                            >
+                                <div class="card">
+                                    <div class="card-header bg-primary bg-gradient text-white">
+                                      <div class="d-flex justify-content-between">
+                                        <div>
+                                          <h3 class="card-title">{{ instructor.first_name }} {{ instructor.last_name }}:</h3>
+                                          <h5 class="card-subtitle text-light">{{ ohq.ohq_status|lower|capfirst }}</h5>
+                                        </div>
+
+                                        {% if ohq.ohq_status == 'PENDING' %}
+                                        <form method="post">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="ohq_id" value="{{ ohq.id }}">
+                                          <button class="btn btn-light" type="submit"><i class="bi fs-3 bi-trash-fill"></i></button>
+                                        </form>
+                                        {% endif %}
+                                      </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="accordion mb-3">
+                                            <button class="accordion-button mb-2" :class="{'collapsed': !showOHQDetails}" type="button" @click="showOHQDetails = !showOHQDetails">
+                                                Question Information:
+                                            </button>
+                                            <div x-show="showOHQDetails" class="ms-4">
+                                                {% if ohq.ohq_assignment %}
+                                                    <div class="mb-3">
+                                                        <h4>Assignment:</h4>
+                                                        <p>{{ ohq.ohq_assignment.assignment_name|default_if_none:"No Assignment" }}</p>
+                                                    </div>
+                                                    <hr>
+                                                {% endif %}
+                                                {% if ohq.ohq_topics.all %}
+                                                    <div class="mb-3">
+                                                        <h4>Course Topics:</h4>
+                                                        <ul class="list-inline">
+                                                            {% for crstopic in ohq.ohq_topics.all %}
+                                                                <li class="list-inline-item">{{ crstopic.course_topic_name }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                    <hr>
+                                                {% endif %}
+                                                {% if ohq.ohq_student_comment %}
+                                                    <div class="mb-3">
+                                                        <h5>Your Comments:</h5>
+                                                        <p>{{ ohq.ohq_student_comment }}</p>
+                                                    </div>
+                                                    <hr>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="accordion">
+                                            <button class="accordion-button" :class="{'collapsed': !showOHSDetails}" type="button" @click="showOHSDetails = !showOHSDetails">
+                                                Office Hour Information:
+                                            </button>
+                                            <div x-show="showOHSDetails" class="ms-4">
+                                                <div class="mt-3 mb-3">
+                                                    <h4>Time Information:</h4>
+                                                    <hr>
+                                                    <div class="ms-4">
+                                                      <p><b>Held on: </b>{{ ohs.ohs_start_time.date }}</p>
+                                                      <p><b>Held from: </b>{{ ohs.ohs_start_time.time }} till {{ ohs.ohs_end_time.time }}</p>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="mb-3">
+                                                    <h4>Location:</h4>
+                                                    <p>{{ ohs.ohs_location.location_name }}</p>
+                                                </div>
+                                                <hr>
+                                                <div class="mb-3">
+                                                    <h4>Status: </h4>
+                                                    <p>{{ ohs.ohs_status|lower|capfirst }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        {% endwith %}
+                    {% endwith %}
+                {% endfor %}
+            {% else %}
+                <section class="container mt-5 col-md-12">
+                    <div class="card">
+                        <div class="card-header text-center bg-primary bg-gradient text-white">
+                            <h3 class="fw-bold">No Office Hour Questions:</h3>
+                        </div>
+                        <div class="card-body">
+                            You have no questions submitted.
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
